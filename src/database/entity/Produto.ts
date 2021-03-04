@@ -25,7 +25,7 @@ export class Produto {
     @Column({ type: 'timestamp', nullable: true })
     updatedAt: Date;
 
-    @ManyToOne(type => Categoria, produto => Produto, { eager: true })
+    @ManyToOne(type => Categoria, produtos => Produto, { eager: true })
     categoria: Categoria;
 
 }

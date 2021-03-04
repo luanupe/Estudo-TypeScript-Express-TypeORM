@@ -1,20 +1,21 @@
 import express from 'express';
+import { Repository } from 'typeorm';
 
-import { getRepo } from '../../database/conn';
+import { getRepositoryCategoria } from '../../database/conn';
 import { Categoria } from '../../database/entity/Categoria'
 
 let router = express.Router();
 
 router.get('/', async (req, res) => {
-    let repositorio = await getRepo(Categoria);
-    let categorias = await repositorio.find();
+    let repositorio:Repository<Categoria> = await getRepositoryCategoria();
+    let categorias:Categoria[] = await repositorio.find();
     res.send(categorias);
 });
 
 router.post('/', async (req, res) => {
     try {
-        let repositorio = await getRepo(Categoria);
-        let categoria = await repositorio.save(req.body);
+        let repositorio:Repository<Categoria> = await getRepositoryCategoria();
+        let categoria:Categoria = await repositorio.save(req.body);
         return res.status(201).send(categoria);
     }
     catch (e) {
@@ -24,11 +25,13 @@ router.post('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        let repositorio = await getRepo(Categoria);
+        let repositorio:Repository<Categoria> = await getRepositoryCategoria();
         let id = parseInt(req.params.id); 
 
-        let categoria = await repositorio.findOne(id);
-        if ((categoria == null)) throw new Error(`Usuário ${id} não encontrado`);
+        let categoria:Categoria = await repositorio.findOneOrFail(id);
+        let produtos = Promise.resolve([ categoria.produtos ]);
+
+        console.log(produtos);
         res.send(categoria);
     }
     catch (e) {

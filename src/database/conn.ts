@@ -1,4 +1,7 @@
-import { getConnection, createConnection, getRepository, EntityTarget } from "typeorm";
+import { getConnection, createConnection, getRepository, EntityTarget, Repository } from "typeorm";
+
+import { Categoria } from "./entity/Categoria";
+import { Produto } from "./entity/Produto";
 
 export async function getConn() {
     let connection = null;
@@ -12,7 +15,12 @@ export async function getConn() {
     return connection;
 }
 
-export async function getRepo(entityClass: EntityTarget<unknown>) {
+export async function getRepositoryCategoria(): Promise<Repository<Categoria>> {
     await getConn();
-    return getRepository(entityClass);
+    return getRepository(Categoria);
+}
+
+export async function getRepositoryProduto(): Promise<Repository<Produto>> {
+    await getConn();
+    return getRepository(Produto);
 }

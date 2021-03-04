@@ -21,6 +21,6 @@ export class Categoria {
     updatedAt: Date;
 
     @OneToMany(type => Produto, categoria => Categoria )
-    produtos: Produto[];
+    produtos: Promise<Produto[]>;
 
 }
