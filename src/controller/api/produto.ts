@@ -1,21 +1,19 @@
-import path from 'path';
 import express from 'express';
 
-import { getRepository } from 'typeorm';
-
-import { Produto } from '../../database/entity/Produto'
+import { getRepo } from '../../database/conn';
+import { Produto } from '../../database/entity/Produto';
 
 let router = express.Router();
 
 router.get('/', async (req, res) => {
-    let repositorio = getRepository(Produto);
+    let repositorio = await getRepo(Produto);
     let produtos = await repositorio.find();
     res.send(produtos);
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        let repositorio = getRepository(Produto);
+        let repositorio = await getRepo(Produto);
         let id = parseInt(req.params.id); 
 
         let produto = await repositorio.findOne(id);
